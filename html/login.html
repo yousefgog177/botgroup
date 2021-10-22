@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Welcome!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" href="/style.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css">
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+  </head>
+  <body>
+    <div class="head-div field">
+    <br><br>
+      <input id="login" type="textarea" class="input-form" placeholder="" name="Discord ID"/>
+      <label for="name" class="label-form">Type Discord ID</label>
+      <br><br>
+      <br>
+      <button class="wtf" id="test" onclick="myFunc1()">
+        Login
+    </button>
+      <br><br>
+      <h1 id="answer">
+        
+        </h1>
+            <h1 id="question">
+        
+        </h1>
+      <h1 id="error">
+        
+        </h1>
+      <h1 id="x">
+        
+        </h1>
+      <h1 id="tmam">
+        
+        </h1>
+
+    </div>
+  </body>
+
+    <script>
+   function myFunc1() {
+      var myInput = document.getElementById("login").value;
+if(!myInput) return swal('error', 'ID Discord is defined', 'error')
+fetch(('/api/v1/login') , {method: 'PUT', body: JSON.stringify({id: myInput}), headers: { "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+if(json.message === 'user Is Defined') return swal('Error', 'ID Discord is defined', 'error')
+localStorage.setItem("token" , json.data.token)
+localStorage.setItem("cookie" , json.data.cookie)
+ return swal('Request Enable', 'Go To Discord\nuse Command $enable ' + json.data.token, 'info')
+})
+    }
+  
+
+  </script>
+</html>

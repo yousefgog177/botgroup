@@ -1,0 +1,11 @@
+<html>
+<script>
+var id = window.location.href.split("/")[3]
+fetch(('/api/v1/get') , {method: 'GET', headers: { 'authorization': id, "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+if(json.message === "Worng authorization") return;
+ window.location = json.link
+
+})
+</script>
+</html>

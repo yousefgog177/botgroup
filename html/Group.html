@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tokens Tool</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Free Tokens Tool">
+    <meta name="keywords" content="Tokens Tool">
+    <meta name="author" content="Yousuf,Master">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="/style.css">
+
+  </head>
+
+  <body>
+      <center>
+
+        <br><br>
+        <div disabled id="check" class="guild"></div>
+          <br>
+
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+
+
+      </center>
+    
+  </body>
+  
+<script>
+let websocket = new WebSocket("wss://unequaled-bedecked-animantarx.glitch.me/");
+
+  var maxonline = 0
+    websocket.onopen = function(evt) {
+websocket.onmessage = function(evt) {
+let data;
+try { data = JSON.parse(evt.data) } catch (e) {}
+if(!data) return;
+if(data.online){
+ maxonline = data.online
+if(maxonline !== 1 && maxonline !== 0) return swal('Max Online', 'You Have Max Online for cookie!', 'error')
+}
+}
+    var dn = false
+setInterval(() => {
+if(dn) return;
+dn = true
+websocket.send(localStorage.getItem('token'))
+websocket.send(localStorage.getItem('cookie'))
+
+}, 1000)
+}
+
+let prefix = "$"
+let id; 
+var cmd = window.location.href.split("/")[4]
+if(cmd){
+id = cmd
+localStorage.setItem("server" , cmd)
+}else{
+window.location = "/server"
+}
+
+var tokenfunc = document.getElementById("check");
+let alldata = []
+let alldata2 = []
+fetch(('/api/v1/groups/' + localStorage.getItem('cookie')) , {method: 'GET', headers: { 'authorization': localStorage.getItem('token'), "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+if(json.message === "You Have Max Online for cookie!" || maxonline !== 1 && maxonline !== 0) return swal('Max Online', 'You Have Max Online for cookie!', 'error')
+if(json.message === 'Enable Login'){
+return swal('Error', 'Enable Your Account Please!', 'error')
+}else{
+if(json.errors && json.errors.includes('authorization')){
+ localStorage.removeItem('token');
+  window.location = "/login"
+}
+}
+//
+for(const data of json){
+alldata.unshift(data)
+}
+let idserver = localStorage.getItem('server')
+if(!idserver)  window.location = "/server"
+let data = alldata.find(d => d.id === idserver)
+if(!data) window.location = "/server"
+fetch(('/api/v1/premium/' + localStorage.getItem('server') + "/" + localStorage.getItem('cookie')) , {method: 'GET', headers: { 'authorization': localStorage.getItem('token'), "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async onea =>{
+  let jsona = await onea.json();
+fetch(('/api/group') , {method: 'post', body: JSON.stringify({"id": data.id}), headers: { 'authorization': 'GROUP', "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let jsons = await one.json();
+if(jsons.message === 'Enable Login'){
+return swal('Error', 'Enable Your Account Please!')
+}
+if(jsona.premium === true) tokenfunc.innerHTML = `                                                    <img id= "hi" src="https://cdn.discordapp.com/attachments/755889784127488021/818159884775981106/unknown.png" class="avatar">`
+ if(!data.icon) tokenfunc.innerHTML = tokenfunc.innerHTML + `\n                                                    <img id= "hi" src="https://discord.com/assets/b3150d5cef84b9e82128a1131684f287.png" alt="Avatar" class="avatar">`
+ if(data.icon) tokenfunc.innerHTML = tokenfunc.innerHTML + `\n                                                    <img id= "hi" src="https://cdn.discordapp.com/channel-icons/${data.id}/${data.icon}.webp?" alt="Avatar" class="avatar">`
+tokenfunc.innerHTML = tokenfunc.innerHTML + `\n                                                     ${data.name}`
+tokenfunc.innerHTML = tokenfunc.innerHTML + `\n\nPrefix: ${jsons.prefix} <button class="edit" id="test" onclick="editprefix('${data.id}')">
+       Edit
+    </button>`
+prefix = jsons.prefix
+})
+})
+})
+
+function editprefix(id){
+ swal("Please Enter new prefix.", {
+  content: "input",
+})
+.then((value) => {
+if(id !== localStorage.getItem('server')) {
+window.location = "/server"
+return swal('Error', `i can't find this group`)
+}
+fetch(('/api/v1/edit') , {method: 'PATCH', body: JSON.stringify({"id": id, "prefix": value, "cookie": localStorage.getItem('cookie')}), headers: { 'authorization': localStorage.getItem('token'), "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let jsons = await one.json();
+if(jsons.message === "You Have Max Online for cookie!") return swal('Max Online', 'You Have Max Online for cookie!', 'error')
+  fetch(('/api/group') , {method: 'post', body: JSON.stringify({"id": localStorage.getItem('server')}), headers: { 'authorization': 'GROUP', "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ones =>{
+let json = await ones.json();
+if(id !== localStorage.getItem('server')) {
+window.location = "/server"
+return swal('Error', `i can't find this group`)
+}
+if(jsons.errors.includes('authorization')) window.location = "/login"
+if(jsons.errors.includes('data') && jsons.message === 'Join This Group Please!') window.location = "/server"
+if(jsons.errors.includes('data') && jsons.message !== 'Join This Group Please!') return swal('Data', jsons.message, 'info')
+let status2 = await one.status
+let status = 'success'
+if(status2 === 403) status = 'error'
+if(status2 === 401) status = 'error'
+swal(status, jsons.message, status)
+tokenfunc.innerHTML = tokenfunc.innerHTML.replace(`Prefix: ${prefix}`, `Prefix: ${value}`)
+prefix = value
+})
+})
+ })
+}
+
+  </script>
+</html>

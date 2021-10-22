@@ -1,0 +1,156 @@
+body{
+	background-color: #1a1313;
+	font-family: 'Cairo';
+  color: white;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #222222;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #555;
+}
+
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+fieldset {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    border: 1px solid #777;
+    min-width: 0;
+}
+
+legend {
+    padding: 0 5px;
+    color: #777;
+    font-size: 11pt;
+    font-weight: bold;
+}
+
+label {
+    color: #777;
+    font-weight: bold;
+}
+
+#connectionStatus {
+    font-weight: bold;
+}
+
+#content {
+    padding: 10px;
+    margin-left: 200px;
+    min-width: 600px
+}
+
+#serverUrl {
+    width: 500px;
+    padding: 1px 3px;
+    border: 1px solid #999;
+}
+
+#disconnectButton {
+    display: none;
+}
+
+#requestArea textarea {
+    min-width: 300px;
+    height: 2em;
+    padding: 0 3px;
+    /*line-height: 150%;*/
+}
+
+#messages {
+    height: 300px;
+    margin: 5px 0;
+    padding: 0 5px;
+    overflow: auto;
+    border: 1px dotted #777;
+    line-height: 150%;
+}
+
+#messages pre {
+    width: 100%;
+    color: white;
+    margin: 0;
+}
+
+#messages pre.sent {
+    color: #f63;
+}
+
+#sidebar {
+    padding: 0;
+    padding-right: 10px;
+    margin: 0;
+    font-size: 11px;
+    width: 200px;
+    position: absolute;
+    left: 0;
+    border-right: solid 1px #e9eced;
+    height: calc(100vh - 55px);
+}
+
+#history {
+    width: 175px;
+    list-style: none;
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+#history a {
+    width: 165px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block;
+    overflow: hidden
+}
+
+#history li{
+    position: relative;
+}
+
+.removeHistory
+{
+    text-decoration: underline;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color:white;
+}

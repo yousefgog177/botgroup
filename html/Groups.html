@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" data-color="dark">
+
+<link rel="icon" href="https://cdn.discordapp.com/avatars/719635889596399747/7bd6a23b1b313e8e5ec621762d1a2b42.png?size=1024">
+<meta property="og:image" content="https://cdn.discordapp.com/avatars/719635889596399747/7bd6a23b1b313e8e5ec621762d1a2b42.png?size=1024">
+<meta property="og:description" content="StaffRanks Dashboard">
+<meta property="og:title" content="StaffRanks">
+<meta property="og:color" content="#242424">
+<meta name="theme-color" content="#242424">
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/main.css">
+    <title>StaffRanks Dashboard</title>
+
+    <script src="https://hcaptcha.com/1/api.js" async defer></script>
+    <script type="text/javascript" src="/assets/discord.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/assets/functions.js"></script>
+  
+</head>
+<body>
+<div id="loadingDiv"><center><svg style="margin=top:75px;" width="100px" height="100px" version="1.1" id="L4" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 100 100" enable-background="new 0 0 0 0" xml:space="preserve"><circle fill="#fff" stroke="none" cx="6" cy="50" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.1"/></circle><circle fill="#fff" stroke="none" cx="26" cy="50" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite"  begin="0.2"/></circle><circle fill="#fff" stroke="none" cx="46" cy="50" r="6"><animate attributeName="opacity" dur="1s" values="0;1;0" repeatCount="indefinite" begin="0.3"/></svg></center></div>
+
+<div class="sidenav">
+<div class="userInfo">
+<img src="https://cdn.discordapp.com/attachments/729466154082631750/829122361554501642/d3b854fb5b8c3c2d4c9f3a7306ad9376.png" class="userAvatar">
+<h1 class="userUsername">No Username.</h1>
+</div>
+<h2 class="line"></h2>
+<div class="selections">
+<h1 class="sidenav-select" id="serversbutton" onclick="loadServersData()">My Servers</h1>
+<h1 class="sidenav-select" id="bgbutton" onclick="loadBgData()">Profile Backgrounds</h1>
+<h1 class="sidenav-select" id="premiumbutton" onclick="loadPremiumData()">Premium</h1>
+<h1 class="sidenav-select" id="claimpremiumbutton" onclick="loadClaimData()">Claim Premium</h1>
+<h1 class="sidenav-select">Settings</h1>
+<h1 class="sidenav-select logout" id="logoutbutton" onclick="logout()">Logout</h1>
+
+</div>
+</div>
+
+<div class="main" id="mainForm">
+<h1 class="title" id="titleofpage">Loading</h1>
+</div>
+
+</body>
+</html>
